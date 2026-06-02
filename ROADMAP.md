@@ -60,11 +60,29 @@ Server reaches `Ready` with all `_FTL` prototypes loading. Map format 6 auto-mig
 
 ---
 
-## Phase 4 — Runtime Verification 🔄 In Progress
+## Phase 4a — MCP Game Server ⏳ Pending
 
-Server boots, reaches Ready. Client not yet connected.
+An MCP server embedded in `Content.Server` that exposes game state and actions as tools, enabling agents (and automated tests) to drive the game without a human client. Built as an EntitySystem that spins up an HTTP/SSE endpoint alongside the game server.
 
-- [ ] Star map opens and displays warp points
+**Tools to expose:**
+- `execute_command(command)` — run any server console command
+- `get_entities_near(position, range)` — query entities and their components
+- `spawn_entity(prototype, position)` — spawn any entity by prototype ID
+- `get_ship_systems(grid_id)` — read power, atmos, hull status of a ship grid
+- `get_logs(n)` — tail recent server log output
+- `get_map_info()` — loaded maps, grids, entity counts
+
+**Why:** Enables Phase 4b verification without a human in the loop. An agent can spawn AI ships, check state transitions, verify the star map generates, and walk the full checklist programmatically. Also useful for regression testing as the game develops.
+
+**Transport:** HTTP SSE — game server runs it on a configurable port, Claude Code connects via MCP settings.
+
+---
+
+## Phase 4b — Runtime Verification ⏳ Pending
+
+Driven by the MCP server. Server boots, reaches Ready.
+
+- [ ] Star map generates warp points on round start
 - [ ] Warp drive charges and jump executes
 - [ ] Arrival effects trigger (map spawns, station spawns)
 - [ ] AI enemy ships spawn in sector
