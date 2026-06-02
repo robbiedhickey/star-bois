@@ -1,0 +1,41 @@
+- type: entity
+  name: Recruit Spawner
+  id: TradeStationRecruitSpawner
+  suffix: Trade Station, NPC
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+      - state: green
+  - type: ConditionalSpawner
+    prototypes:
+      - MobHumanTraderRecruit
+
+- type: entity
+  name: Quartermaster Spawner
+  id: TradeStationQuartermasterSpawner
+  suffix: Trade Station, NPC
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      sprite: Markers/jobs.rsi
+      layers:
+        - state: green
+    - type: ConditionalSpawner
+      prototypes:
+        - MobHumanTraderQuartermaster
+
+- type: entity
+  name: Cargo Worker Spawner
+  id: TradeStationCargoWorkerSpawner
+  suffix: Trade Station, NPC
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      sprite: Markers/jobs.rsi
+      layers:
+        - state: green
+    - type: ConditionalSpawner
+      prototypes:
+        - MobCargoWorker

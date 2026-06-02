@@ -1,0 +1,20 @@
+- type: gameMap
+  id: Nesasio
+  mapName: 'Nesasio'
+  mapPath: /Maps/_FTL/ships/nesasio.yml
+  minPlayers: 3
+  maxPlayers: 11
+  stations:
+    Nesasio:
+      stationProto: StandardIndependentShip
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'FSC Nesasio-Class Stealth Bomber' # Let's drop nukes on warzones from space it's totally not a war crime!!!
+        - type: StationJobs
+          availableJobs:
+            Captain: [ 1, 1 ] # Command
+            Pilot: [ 1, 1 ]
+            SecurityOfficer: [ 2, 2 ] # Security
+            StationEngineer: [ 2, 2 ] # Engi
+            MedicalDoctor: [ 1, 1 ] # Medical
+            Passenger: [ -1, -1 ] # Everyone else

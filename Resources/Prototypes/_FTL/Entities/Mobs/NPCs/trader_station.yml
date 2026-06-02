@@ -1,0 +1,64 @@
+- type: entity
+  parent: MobHuman
+  id: MobHumanTraderRecruit
+  name: recruit
+  suffix: Spawnable, NPC
+  components:
+    - type: RandomHumanoidSpawner
+      settings: TraderRecruit
+
+- type: entity
+  parent: MobHuman
+  id: MobHumanTraderQuartermaster
+  name: quartermaster
+  suffix: Spawnable, NPC
+  components:
+    - type: RandomHumanoidSpawner
+      settings: TraderQuartermaster
+    - type: AutoImplant
+      implants:
+      - MicroBombImplant
+
+- type: entity
+  parent: MobHuman
+  id: MobCargoWorker
+  name: cargo worker
+  suffix: NPC
+  components:
+    - type: RandomHumanoidSpawner
+      settings: TraderCargoWorker
+
+- type: randomHumanoidSettings
+  id: TraderRecruit
+  components:
+    - type: Loadout
+      prototypes: [ PassengerGear ]
+    - type: GhostRole
+      name: ghost-role-information-recruit-name
+      description: ghost-role-information-recruit-description
+    - type: GhostTakeoverAvailable
+
+- type: randomHumanoidSettings
+  id: TraderQuartermaster
+  components:
+    - type: Loadout
+      prototypes: [ QuartermasterGear ]
+    - type: GhostRole
+      name: ghost-role-information-quartermaster-name
+      description: ghost-role-information-quartermaster-description
+    - type: GhostTakeoverAvailable
+
+- type: randomHumanoidSettings
+  id: TraderCargoWorker
+  components:
+    - type: Loadout
+      prototypes: [ CargoTechGear ]
+    - type: NpcFactionMember
+      factions:
+        - SimpleNeutral
+    - type: InputMover
+    - type: MobMover
+    - type: HTN
+      rootTask:
+        task: SimpleHumanoidNeutralCompound
+    - type: NPCRetaliation

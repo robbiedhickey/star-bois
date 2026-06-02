@@ -1,0 +1,20 @@
+- type: gameMap
+  id: Stormwalker
+  mapName: 'Stormwalker'
+  mapPath: /Maps/_FTL/ships/stormwalker.yml
+  minPlayers: 11
+  maxPlayers: 33
+  stations:
+    Stormwalker:
+      stationProto: StandardIndependentShip
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'ACKs Stormwalker-Class Cruiser' # 17 guns, That's a cruiser if I've ever seen one.
+        - type: StationJobs
+          availableJobs:
+            Captain: [ 1, 1 ] # Command
+            Pilot: [ 1, 1 ]
+            SecurityOfficer: [ 8, 8 ] # Security
+            StationEngineer: [ 6, 6 ] # Engi
+            MedicalDoctor: [ 2, 2 ] # Medical
+            Passenger: [ -1, -1 ] # Cargo

@@ -1,0 +1,16 @@
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: WeaponPadCircuitboard
+  name: weapon console computer board
+  description: An computer board used in weapon consoles.
+  components:
+    - type: Sprite
+      sprite: Objects/Misc/module.rsi
+      state: cpu_security
+    - type: ComputerBoard
+      prototype: WeaponTargetingPad
+    - type: Tag
+      tags:
+        - WeaponPadElectronics
+    - type: StaticPrice
+      price: 1500 # these should be super rare

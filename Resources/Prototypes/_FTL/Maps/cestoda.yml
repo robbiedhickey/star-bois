@@ -1,0 +1,20 @@
+- type: gameMap
+  id: Cestoda
+  mapName: 'Cestoda'
+  mapPath: /Maps/_FTL/ships/cestoda.yml
+  minPlayers: 3
+  maxPlayers: 12
+  stations:
+    Cestoda:
+      stationProto: StandardIndependentShip
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'CS Cestoda-Class Budget Cruiser' # Left out in space... How did this get here?
+        - type: StationJobs
+          availableJobs:
+            Captain: [ 1, 1 ] # Command
+            Pilot: [ 1, 1 ]
+            SecurityOfficer: [ 3, 3 ] # Security
+            StationEngineer: [ 3, 3 ] # Engi
+            MedicalDoctor: [ 3, 3 ] # Medical
+            Passenger: [ -1, -1 ] # Everyone else

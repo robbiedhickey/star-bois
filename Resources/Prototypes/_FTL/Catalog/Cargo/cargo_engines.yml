@@ -1,0 +1,19 @@
+- type: cargoProduct
+  id: GravityGenerator
+  icon:
+    sprite: Structures/Machines/gravity_generator_mini.rsi
+    state: on
+  product: GravityGeneratorMini
+  cost: 4000
+  category: Engineering
+  group: market
+
+- type: cargoProduct
+  id: ShuttleComputer
+  icon:
+    sprite: Objects/Misc/module.rsi
+    state: cpuboard
+  product: ShuttleConsoleCircuitboard
+  cost: 4000
+  category: Engineering
+  group: market

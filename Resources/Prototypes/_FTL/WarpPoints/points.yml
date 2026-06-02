@@ -1,0 +1,116 @@
+- type: ftlPoint
+  id: StationPoint
+  tag: ship-ftl-tag-base
+  effects: []
+  components:
+    - type: AvoidStar
+
+- type: ftlPoint
+  id: LoDangerPoint
+  tag: ship-ftl-tag-star
+  probability: 0.6
+  effects:
+    - !type:SpawnMapEffect
+      mapPaths:
+      - /Maps/_FTL/ai/escape-pod-deserted.yml
+      - /Maps/_FTL/ai/escape-pod-explosive.yml
+#      - /Maps/_FTL/ai/escape-pod-occupied.yml
+      - /Maps/_FTL/ai/rod-class.yml
+
+- type: ftlPoint
+  id: HiDangerPoint
+  tag: ship-ftl-tag-star
+  probability: 0.9
+  effects:
+    - !type:SpawnMapEffect
+      mapPaths:
+      - /Maps/_FTL/ai/escape-pod-trapped.yml
+      - /Maps/_FTL/ai/hijacked-cargo-vessel.yml
+      - /Maps/_FTL/ai/spark-class.yml
+      - /Maps/_FTL/ai/rod-class.yml
+
+- type: ftlPoint
+  id: PlanetPoint
+  tag: ship-ftl-tag-planet
+  effects:
+    - !type:ToPlanetEffect
+      biomeTemplates:
+        - Grasslands
+        - Lava
+        - Snow
+        - LowDesert
+        - Caves
+        - Flesh
+    - !type:AddWeatherEffect
+      probability: 0.75
+      weatherPrototypes:
+        - Ashfall # reason why we don't have any of the thicker ones is because they completely obstruct the tile
+        - AshfallLight
+        - Fallout
+        - Hail
+        - Rain
+        - Sandstorm
+        - SnowfallLight
+        - SnowfallMedium
+        - Storm
+        - Blood
+    - !type:SpawnDungeonEffect
+      range: 75
+  components:
+    - type: AvoidStar
+
+- type: ftlPoint
+  id: AsteroidPoint
+  tag: ship-ftl-tag-asteroid
+  effects:
+    - !type:ApplyWorldGenConfigEffect
+    - !type:SpawnDungeonEffect
+      range: 1500
+      maxSpawn: 7
+
+- type: ftlPoint
+  id: StarPoint
+  tag: ship-ftl-tag-star
+  effects:
+    - !type:SpawnDungeonEffect
+      probability: 0.5
+
+- type: ftlPoint
+  id: RuinPoint
+  tag: ship-ftl-tag-ruin
+  effects:
+    - !type:SpawnDungeonEffect
+  components:
+    - type: AvoidStar
+
+- type: ftlPoint
+  id: NoDangerPoint
+  tag: ship-ftl-tag-star
+  effects: []
+
+- type: ftlPoint
+  id: WarpPoint
+  tag: ship-ftl-tag-warp
+  effects: []
+  components:
+    - type: AvoidStar
+    - type: GenerateNewSectorTick
+#    - type: FactoryTick
+#      mapPaths:
+#        - /Maps/_FTL/ancient/easy-drone.yml
+#        - /Maps/_FTL/ancient/tough-drone.yml
+#        - /Maps/_FTL/independent/orb.yml
+#        - /Maps/_FTL/independent/pod.yml
+#        - /Maps/_FTL/independent/rod.yml
+#        - /Maps/_FTL/independent/hostile-escape-pod.yml
+#        - /Maps/_FTL/independent/cargo-vessel.yml
+#        - /Maps/_FTL/incsek/bomber.yml
+#        - /Maps/_FTL/coregov/retribution.yml
+#        - /Maps/_FTL/fsc/fighter.yml
+
+#- type: ftlPoint
+#  id: ShipyardPoint
+#  tag: ship-ftl-tag-yard
+#  effects: []
+#  components:
+#    - type: FactoryTick

@@ -1,0 +1,188 @@
+# IPC species definition - ported from Ekrixi to current SS14 body system.
+# BodyPart entities replaced with Organ entities following the arachnid pattern.
+# BaseMobSpeciesOrganic replaced with BaseSpeciesMobOrganic.
+
+- type: markingsGroup
+  parent: Undergarments
+  id: IPC
+  limits:
+    enum.HumanoidVisualLayers.Hair:
+      limit: 1
+      required: false
+    enum.HumanoidVisualLayers.FacialHair:
+      limit: 1
+      required: false
+    enum.HumanoidVisualLayers.HeadSide:
+      limit: 1
+      required: false
+    enum.HumanoidVisualLayers.HeadTop:
+      limit: 1
+      required: false
+    enum.HumanoidVisualLayers.Chest:
+      limit: 1
+      required: false
+    enum.HumanoidVisualLayers.Tail:
+      limit: 0
+      required: false
+
+# Appearance entity - provides InitialBody organ mapping
+- type: entity
+  parent: BaseSpeciesAppearance
+  id: AppearanceIPC
+  categories: [ HideSpawnMenu ]
+  name: ipc appearance
+  components:
+  - type: Inventory
+    templateId: ipc
+    speciesId: ipc
+  - type: InitialBody
+    organs:
+      Torso: OrganIPCTorso
+      Head: OrganIPCHead
+      ArmLeft: OrganIPCArmLeft
+      ArmRight: OrganIPCArmRight
+      HandLeft: OrganIPCHandLeft
+      HandRight: OrganIPCHandRight
+      LegLeft: OrganIPCLegLeft
+      LegRight: OrganIPCLegRight
+      FootLeft: OrganIPCFootLeft
+      FootRight: OrganIPCFootRight
+      Brain: OrganIPCCPU
+      Eyes: OrganIPCGPU
+      Lungs: OrganIPCFan
+  - type: HumanoidProfile
+    species: IPC
+
+# Base species mob - organic equivalent for IPC
+- type: entity
+  save: false
+  name: Urist McIPC
+  parent:
+    - AppearanceIPC
+    - BaseSpeciesMobOrganic
+  id: BaseMobIPC
+  abstract: true
+  components:
+  - type: MovementSpeedModifier
+  - type: HumanoidProfile
+    species: IPC
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Robotic
+  - type: Bloodstream
+    bloodReagent: Oil
+    bloodlossDamage:
+      types:
+        Heat: 0.25
+  - type: Temperature
+    heatDamageThreshold: 452.875
+    coldDamageThreshold: 283.15
+    currentTemperature: 313.15
+    specificHeat: 46
+    coldDamage:
+      types:
+        Cold: 1
+        Heat: -2
+    heatDamage:
+      types:
+        Heat: 2
+        Cold: -1
+  - type: Respirator
+    damage:
+      types:
+        Heat: 0.25
+    damageRecovery:
+      types:
+        Heat: -0.25
+  - type: Repairable
+    doAfterDelay: 5
+    damage:
+      groups:
+        Brute: -75
+      types:
+        Cold: -15
+        Heat: 30
+  - type: Barotrauma
+    damage:
+      types:
+        Heat: 0.25
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      70: 0.6
+      90: 0.4
+  - type: Speech
+    speechSounds: IPC
+  - type: Vocal
+    sounds:
+      Male: MaleIPC
+      Female: FemaleIPC
+      Unsexed: UnisexIPC
+    wilhelm:
+      path: /Audio/_FTL/Voice/IPC/wilhelm.ogg
+    wilhelmProbability: 0.001
+  - type: Inventory
+
+# Dummy for character creator preview
+- type: entity
+  name: Urist McIPC
+  parent: MobHuman
+  id: MobIPCDummy
+  noSpawn: true
+  save: false
+  components:
+  - type: Inventory
+    templateId: ipc
+  - type: HumanoidProfile
+    species: IPC
+
+# External visual base for IPC body part organs
+- type: entity
+  id: OrganIPCExternal
+  abstract: true
+  components:
+  - type: VisualOrgan
+    data:
+      sprite: _FTL/Mobs/Species/IPCs/parts.rsi
+  - type: VisualOrganMarkings
+    markingData:
+      group: IPC
+
+- type: entity
+  parent: [ OrganBaseTorso, OrganIPCExternal ]
+  id: OrganIPCTorso
+
+- type: entity
+  parent: [ OrganBaseHead, OrganIPCExternal ]
+  id: OrganIPCHead
+
+- type: entity
+  parent: [ OrganBaseArmLeft, OrganIPCExternal ]
+  id: OrganIPCArmLeft
+
+- type: entity
+  parent: [ OrganBaseArmRight, OrganIPCExternal ]
+  id: OrganIPCArmRight
+
+- type: entity
+  parent: [ OrganBaseHandLeft, OrganIPCExternal ]
+  id: OrganIPCHandLeft
+
+- type: entity
+  parent: [ OrganBaseHandRight, OrganIPCExternal ]
+  id: OrganIPCHandRight
+
+- type: entity
+  parent: [ OrganBaseLegLeft, OrganIPCExternal ]
+  id: OrganIPCLegLeft
+
+- type: entity
+  parent: [ OrganBaseLegRight, OrganIPCExternal ]
+  id: OrganIPCLegRight
+
+- type: entity
+  parent: [ OrganBaseFootLeft, OrganIPCExternal ]
+  id: OrganIPCFootLeft
+
+- type: entity
+  parent: [ OrganBaseFootRight, OrganIPCExternal ]
+  id: OrganIPCFootRight

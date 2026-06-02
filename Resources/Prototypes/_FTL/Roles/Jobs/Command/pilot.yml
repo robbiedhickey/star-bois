@@ -1,0 +1,25 @@
+- type: job
+  id: Pilot
+  name: job-name-pilot
+  playTimeTracker: JobPilot
+  startingGear: PilotGear
+  icon: "JobIconCaptain"
+  supervisors: job-supervisors-captain
+  setPreference: true
+  accessGroups:
+    - AllAccess
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobEkrixiCommandWhitelist
+      time: 1
+
+- type: startingGear
+  id: PilotGear
+  equipment:
+    eyes: ClothingEyesGlassesSunglasses
+    id: CaptainPDA
+    ears: ClothingHeadsetAltCommand
+  storage:
+    back:
+    - BoxSurvival
+    - Flash

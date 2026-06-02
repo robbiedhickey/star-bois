@@ -1,0 +1,25 @@
+- type: entity
+  parent: IDCardStandard
+  id: PilotIDCard
+  name: pilot ID card
+  description: It looks pretty similar to the captain's...
+  components:
+    - type: Sprite
+      layers:
+        - state: default
+        - state: idcaptain
+    - type: PresetIdCard
+      job: Pilot
+
+- type: entity
+  parent: IDCardStandard
+  id: SAIDCard
+  name: Station Administrator ID card
+  description: QM? Never heard of him.
+  components:
+    - type: Sprite
+      layers:
+        - state: default
+        - state: idquartermaster
+    - type: PresetIdCard
+      job: StationAdministrator

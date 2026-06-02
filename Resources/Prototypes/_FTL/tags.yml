@@ -1,0 +1,38 @@
+- type: Tag
+  id: Credit
+
+- type: Tag
+  id: Cartridge20mm
+
+- type: Tag
+  id: Cartridge53mm
+
+- type: Tag
+  id: Cartridge80mm
+
+- type: Tag
+  id: Cartridge105mm
+
+- type: Tag
+  id: Cartridge120mm
+
+- type: Tag
+  id: Cartridge140mm
+
+- type: Tag
+  id: Magazine20mm
+
+- type: Tag
+  id: Magazine53mm
+
+- type: Tag
+  id: Magazine80mm
+
+- type: Tag
+  id: Nothing
+
+- type: Tag
+  id: Missile
+
+- type: Tag
+  id: WeaponPadElectronics

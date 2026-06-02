@@ -1,0 +1,7 @@
+- type: entity
+  id: Viewcone
+  name: viewcone
+  description: It's a viewcone. Should you be seeing this?
+  noSpawn: true
+  components:
+    - type: Occluder

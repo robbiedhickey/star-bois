@@ -1,0 +1,54 @@
+- type: entity
+  parent: BaseWeaponNaval
+  id: Weapon20mm
+  name: 20mm machine gun
+  description: A 20mm light machine gun.
+  placement:
+    mode: SnapgridCenter
+  components:
+    - type: ItemSlots
+      slots:
+        gun_magazine:
+          startingItem: MagazineBox20mm
+          whitelist:
+            tags:
+              - Magazine20mm
+        gun_chamber:
+          startingItem: Cartridge20mm
+          whitelist:
+            tags:
+              - Cartridge20mm
+    - type: Gun
+      fireRate: 16
+
+- type: entity
+  parent: BaseWeaponTurret
+  id: Weapon20mmPD
+  name: 20mm point defense gun
+  description: This PD gun is completely independent of any ammo systems and of any control. Make sure vicinity is clear of missiles before crossing.
+  components:
+  - type: NpcFactionMember
+    factions:
+    - PointDefenseGun
+  - type: BallisticAmmoProvider
+    proto: Cartridge20mm
+    capacity: 1500
+  - type: Gun
+    fireRate: 20
+    selectedMode: FullAuto
+    availableModes:
+    - FullAuto
+  - type: HTN
+    rootTask:
+      task: TurretCompound
+    blackboard:
+      RotateSpeed: !type:Single
+        15.705 # 3.141 * 5
+      SoundTargetInLOS: !type:SoundPathSpecifier
+        path: /Audio/Effects/double_beep.ogg
+      AdvancedTargeting: !type:Bool
+        true
+      RangedRange: !type:Single
+        60.0
+      VisionRadius: !type:Single
+        100.0

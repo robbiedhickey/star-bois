@@ -1,0 +1,21 @@
+- type: entity
+  id: SpawnPointPilot
+  parent: SpawnPointJobBase
+  name: pilot spawn
+  components:
+    - type: SpawnPoint
+      job_id: Pilot
+    - type: Sprite
+      layers:
+        - state: green
+
+- type: entity
+  id: SpawnPointMarine
+  parent: SpawnPointJobBase
+  name: marine spawn
+  components:
+    - type: SpawnPoint
+      job_id: Marine
+    - type: Sprite
+      layers:
+        - state: green
