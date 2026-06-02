@@ -1,3 +1,6 @@
+# Reference forks - managed by `make forks`, not tracked in git
+forks/
+
 # MSbuild binlog files
 *.binlog
 
