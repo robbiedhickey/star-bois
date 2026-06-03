@@ -114,14 +114,34 @@ Driven by the MCP server. Server boots, reaches Ready.
 
 ## Phase 5 — Game Loop Adaptation ⏳ Pending
 
-Replace station-centric round with ship-centric session:
+**Context:** Ekrixi already made the fundamental shift — `StandardIndependentShip` inherits `BaseStation + BaseStationShuttles`, so the ship IS the station. The star map, warp drive, and `EndOnShipDestruction` game rule form a working ship-centric loop. What remains is peeling away station-centric SS14 cruft that was inherited alongside it.
 
-- Replace starting map (station) with a player ship
-- Win/lose: ship destroyed or all crew dead
-- Remove irrelevant round-end triggers (nuke, syndicate objectives)
-- Disable station antag systems (traitor, revolutionary, etc.)
-- Configure 4-player max
-- Dev tooling for easy testing
+**Steps in priority order:**
+
+### 5a — Fix ship selection and crew cap (YAML only)
+- Hard-code **Cestoda** as the single starting ship; remove `FTLMapPool` pool rotation
+- Cap crew slots to **4 players** (trim Cestoda's slot counts)
+- Remove disabled ships from the pool (Nesasio, Stormwalker, THERODTWO) to reduce confusion
+
+### 5b — Strip station-centric systems (YAML + minor C#)
+- Remove `BaseStationAlertLevels` from `StandardIndependentShip` — alert levels model nuke-op station threats, not FTL combat
+- Disable upstream antag game rules at round start: traitor, revolutionary, nuclear operative; none should fire in a co-op session
+- Remove nuke/syndicate objective round-end triggers; the only win/loss is `EndOnShipDestruction` (ship destroyed) or all crew dead
+
+### 5c — Simplify crew spawning (C#)
+- Replace the full `StationJobs` lobby flow with a direct "spawn on ship as crew" path
+- Target four ship roles: **Pilot, Gunner, Engineer, Crew** (generic multi-role)
+- No department selection screen; players pick a role and spawn aboard
+
+### 5d — Round model alignment
+- `EndOnShipDestruction` currently calls `RoundEndSystem.EndRound()` → restarts the round
+- For now: show a "ship destroyed" end screen and return to lobby (acceptable)
+- Note: this is where Phase 5 and Phase 6 meet — the restart behavior eventually becomes "campaign over" or "show score"; do not over-engineer here yet
+
+### 5e — Dev tooling
+- Console command to skip lobby and spawn a full test crew instantly
+- CVar to start with warp drive pre-charged
+- MCP test scenario covering the full Phase 5 loop (spawn → warp → combat → destruction)
 
 ---
 
