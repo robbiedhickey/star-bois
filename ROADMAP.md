@@ -112,7 +112,7 @@ Driven by the MCP server. Server boots, reaches Ready.
 
 ---
 
-## Phase 5 — Game Loop Adaptation ⏳ Pending
+## Phase 5 — Game Loop Adaptation 🔄 In Progress
 
 **Context:** Ekrixi already made the fundamental shift — `StandardIndependentShip` inherits `BaseStation + BaseStationShuttles`, so the ship IS the station. The star map, warp drive, and `EndOnShipDestruction` game rule form a working ship-centric loop. What remains is peeling away station-centric SS14 cruft that was inherited alongside it.
 
@@ -129,10 +129,13 @@ Driven by the MCP server. Server boots, reaches Ready.
 - `Exploration` preset was already clean — only `EndOnShipDestruction` and `GeneratePoints`; no antag rules needed stripping
 - Note: `BaseStationCargo` intentionally kept — cargo bay / resource acquisition fits FTL-style play
 
-### 5c — Simplify crew spawning (C#)
-- Replace the full `StationJobs` lobby flow with a direct "spawn on ship as crew" path
-- Target four ship roles: **Pilot, Gunner, Engineer, Crew** (generic multi-role)
-- No department selection screen; players pick a role and spawn aboard
+### 5c — Simplify crew spawning ✅ Complete
+- `StationJobs` lobby retained but trimmed to 4 roles: Pilot, StationEngineer, MedicalDoctor, Captain
+- All crew jobs given `AllAccess` (own ship, no locked doors); access control preserved for boarding mechanic
+- `game.defaultpreset` CVar now applies even with lobby disabled (was hardcoded to Sandbox)
+- `game.lobbyenabled=true` added to `make server-dev` — lobby shows, player picks role, spawns aboard
+- `test_start_round` and `test_join_game` MCP tools for programmatic spawn (agents/tests bypass lobby)
+- Passenger removed — not a meaningful role on a 4-person ship
 
 ### 5d — Round model alignment
 - `EndOnShipDestruction` calls `RoundEndSystem.EndRound()` → round restarts
@@ -140,10 +143,10 @@ Driven by the MCP server. Server boots, reaches Ready.
 - Only needed: a "ship destroyed" end screen with run summary before returning to lobby
 - Mid-run save/resume is Phase 6, not here
 
-### 5e — Dev tooling
-- Console command to skip lobby and spawn a full test crew instantly
-- CVar to start with warp drive pre-charged
-- MCP test scenario covering the full Phase 5 loop (spawn → warp → combat → destruction)
+### 5e — Dev tooling 🔄 Partial
+- `test_start_round` + `test_join_game` MCP tools cover the "skip lobby and spawn a crew" case ✅
+- CVar to start with warp drive pre-charged ⏳
+- MCP test scenario covering the full Phase 5 loop (spawn → warp → combat → destruction) ⏳
 
 ---
 
