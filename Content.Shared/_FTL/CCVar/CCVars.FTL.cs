@@ -16,4 +16,10 @@ public sealed class CCVarsFTL
     /// </summary>
     public static readonly CVarDef<string> StarmapRandomPrototypeId =
         CVarDef.Create("starmap.weighted_random_id", "DefaultStarmap", CVar.ARCHIVE);
+
+    /// <summary>
+    ///     When true, warp drives charge instantly (skip the 30-second charge time). Dev/test only.
+    /// </summary>
+    public static readonly CVarDef<bool> WarpInstantCharge =
+        CVarDef.Create("warp.instant_charge", false, CVar.SERVERONLY);
 }

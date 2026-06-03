@@ -12,6 +12,9 @@ ship-inbound-message = Alert! Sensor array output have detected {$amount ->
     } Automatically elevating to Blue alert.
 
 popup-console-selected = Destination selected.
+popup-console-selected-ready = Destination set. Drive is charged — activate it to jump!
+popup-console-selected-charging = Destination set. Drive charging: {$pct}%.
+popup-console-selected-needs-drive = Destination set. Find and activate the warp drive to begin charging.
 popup-drive-charging = Started charging drive.
 popup-drive-not-charging = Stopped charging drive.
 
@@ -60,3 +63,9 @@ drive-examined = The drive is {$charging ->
 drive-examined-ready = The drive is ready for jump!
 
 drive-examined-multiple-drives = [color=red]There are more than one drives on this ship, you must have only one![/color]
+
+starmap-drive-status-idle = Drive idle — select a destination, then activate the drive.
+starmap-drive-status-destination-set = Destination set — activate the warp drive to jump.
+starmap-drive-status-charging = Drive charging: {$pct}%
+starmap-drive-status-ready = Drive ready — activate it to jump!
+starmap-drive-status-no-drive = No warp drive found on this ship.

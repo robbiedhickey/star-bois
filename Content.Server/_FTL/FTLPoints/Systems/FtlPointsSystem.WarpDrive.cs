@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server._FTL.FTLPoints.Components;
 using Content.Server.Shuttles.Components;
+using Content.Shared._FTL.CCVar;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Robust.Shared.Map;
@@ -32,11 +33,10 @@ public sealed partial class FtlPointsSystem
     {
         var xform = Transform(uid);
         if (xform.GridUid == null)
-            return; // we need a grid uid
+            return;
 
         var grid = xform.GridUid.Value;
-        if (!TryComp<WarpingShipComponent>(grid, out var warpingShipComponent))
-            return;
+        EnsureComp<WarpingShipComponent>(grid);
 
         component.Charging = !component.Charging;
         _popupSystem.PopupEntity(Loc.GetString(component.Charging ? "popup-drive-charging" : "popup-drive-not-charging"), uid);
@@ -44,11 +44,12 @@ public sealed partial class FtlPointsSystem
 
     private void DriveUpdate(float frameTime)
     {
+        var instantCharge = _configurationManager.GetCVar(CCVarsFTL.WarpInstantCharge);
         var query = EntityQueryEnumerator<WarpDriveComponent, TransformComponent>();
         while (query.MoveNext(out var entity, out var component, out var xform))
         {
             if (!xform.GridUid.HasValue)
-                return;
+                continue;
 
             var grid = xform.GridUid.Value;
             var warpingShipComponent = EnsureComp<WarpingShipComponent>(grid);
@@ -57,10 +58,15 @@ public sealed partial class FtlPointsSystem
                 continue;
 
             if (!TryComp<ShuttleComponent>(grid, out var shuttleComponent))
-                return;
+                continue;
 
             if (component.Charging && component.Charge < component.ChargeNeeded)
-                component.Charge += frameTime;
+            {
+                if (instantCharge)
+                    component.Charge = component.ChargeNeeded;
+                else
+                    component.Charge += frameTime;
+            }
 
             if (component.Charge < component.ChargeNeeded)
                 continue;

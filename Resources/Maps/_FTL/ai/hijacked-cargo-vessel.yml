@@ -1,6 +1,17 @@
 meta:
-  format: 6
-  postmapinit: false
+  format: 7
+  category: Grid
+  engineVersion: 277.0.0
+  forkId: ""
+  forkVersion: ""
+  time: 06/03/2026 15:32:08
+  entityCount: 269
+maps: []
+grids:
+- 1
+orphans:
+- 1
+nullspace: []
 tilemap:
   0: Space
   34: FloorDarkMono
@@ -16,7 +27,6 @@ entities:
       name: '[NTRL] Hijacked Cargo Vessel'
     - type: Transform
       pos: -0.5,-0.4765625
-      parent: invalid
     - type: MapGrid
       chunks:
         0,0:

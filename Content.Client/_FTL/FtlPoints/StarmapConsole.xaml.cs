@@ -54,6 +54,7 @@ public sealed partial class StarmapConsole : FancyWindow
 
         var currentStar = state.Stars.Find(star => star.Position == Vector2.Zero);
         CurrentStarName.Text = currentStar.Name;
+        DriveStatusLabel.Text = state.DriveStatus;
     }
 
     private void UpdateStars(List<Star> stars)

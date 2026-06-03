@@ -17,6 +17,13 @@ public sealed partial class SpawnMapEffect : FtlPointEffect
     {
         var mapLoader = args.EntityManager.System<MapLoaderSystem>();
         var random = IoCManager.Resolve<IRobustRandom>();
-        mapLoader.TryLoadMap(random.Pick(MapPaths), out _, out _);
+        try
+        {
+            mapLoader.TryLoadGrid(args.MapId, random.Pick(MapPaths), out _);
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorS("ftl.spawn_map", $"Failed to load map into star: {ex.Message}");
+        }
     }
 }

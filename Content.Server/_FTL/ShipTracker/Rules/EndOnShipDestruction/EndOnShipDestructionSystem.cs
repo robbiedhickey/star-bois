@@ -64,6 +64,9 @@ public sealed class EndOnShipDestructionSystem : GameRuleSystem<EndOnShipDestruc
     {
         base.ActiveTick(uid, component, gameRule, frameTime);
 
+        if (!component.MainShip.IsValid())
+            return;
+
         if (!TryComp<ShipTrackerComponent>(component.MainShip, out var trackerComponent))
         {
             Log.Warning("Ship tracker does not exist on main grid!");

@@ -30,11 +30,13 @@ public sealed class StarmapConsoleBoundUserInterfaceState : BoundUserInterfaceSt
 {
     public List<Star> Stars;
     public float Range;
+    public string DriveStatus;
 
-    public StarmapConsoleBoundUserInterfaceState(List<Star> stars, float range)
+    public StarmapConsoleBoundUserInterfaceState(List<Star> stars, float range, string driveStatus)
     {
         Stars = stars;
         Range = range;
+        DriveStatus = driveStatus;
     }
 }
 

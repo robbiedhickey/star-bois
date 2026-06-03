@@ -61,6 +61,10 @@
                     <Button Name="StarWarpButton" Text="{Loc 'starmap-star-details-button-warp'}" Disabled="True"/>
                 </GridContainer>
             </BoxContainer>
+
+            <controls:StripeBack Margin="0 8 0 0">
+                <Label Name="DriveStatusLabel" Text="" HorizontalAlignment="Center" Margin="4"/>
+            </controls:StripeBack>
         </BoxContainer>
     </GridContainer>
 </controls:FancyWindow>

@@ -98,8 +98,15 @@ An MCP server embedded in `Content.Server` that exposes game state and actions a
 
 Driven by the MCP server. Server boots, reaches Ready.
 
-- [ ] Star map generates warp points on round start
+- [x] Star map generates warp points on round start
 - [ ] Warp drive charges and jump executes
+  - Star selection and destination setting work ✅
+  - Warp button now gives feedback: prompts player to find WarpDrive ✅
+  - `FTLToCoordinates` wired up ✅ — end-to-end jump not yet verified
+  - Fixed two `return`-instead-of-`continue` bugs in `DriveUpdate` that aborted the entire update loop ✅
+  - Fixed `OnDriveInteractHand` silently failing when `WarpingShipComponent` not yet present ✅
+  - `warp.instant_charge` CVar added; enabled by default in `make server-dev` ✅
+  - Outstanding: walk to WarpDrive (pos 4.5,-16.5 on Cestoda), press E, confirm ship moves and client follows
 - [ ] Arrival effects trigger (map spawns, station spawns)
 - [ ] AI enemy ships spawn in sector
 - [ ] AI transitions Cruising → Hostile on contact
@@ -145,7 +152,7 @@ Driven by the MCP server. Server boots, reaches Ready.
 
 ### 5e — Dev tooling 🔄 Partial
 - `test_start_round` + `test_join_game` MCP tools cover the "skip lobby and spawn a crew" case ✅
-- CVar to start with warp drive pre-charged ⏳
+- `warp.instant_charge` CVar skips 30s charge time; enabled by default in `make server-dev` ✅
 - MCP test scenario covering the full Phase 5 loop (spawn → warp → combat → destruction) ⏳
 
 ---

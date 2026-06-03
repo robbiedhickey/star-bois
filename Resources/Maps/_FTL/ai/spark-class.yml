@@ -1,6 +1,17 @@
 meta:
-  format: 6
-  postmapinit: false
+  format: 7
+  category: Grid
+  engineVersion: 277.0.0
+  forkId: ""
+  forkVersion: ""
+  time: 06/03/2026 15:32:08
+  entityCount: 56
+maps: []
+grids:
+- 1
+orphans:
+- 1
+nullspace: []
 tilemap:
   0: Space
   124: Lattice
@@ -14,7 +25,6 @@ entities:
       name: '[NTRL] Spark-class Light Fighter'
     - type: Transform
       pos: -0.515625,-0.453125
-      parent: invalid
     - type: MapGrid
       chunks:
         0,0:

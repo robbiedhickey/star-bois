@@ -59,9 +59,34 @@ public sealed partial class FtlPointsSystem
         var range = 10f;
         var stars = GetStarsInRange(star.Value.Position, 50f);
         stars.Insert(0, star.Value with {Position = Vector2.Zero});
-        var state = new StarmapConsoleBoundUserInterfaceState(stars, range);
+
+        var driveStatus = GetDriveStatusString(xform.GridUid);
+        var state = new StarmapConsoleBoundUserInterfaceState(stars, range, driveStatus);
 
         _userInterface.SetUiState(uid, StarmapConsoleUiKey.Key, state);
+    }
+
+    private string GetDriveStatusString(EntityUid? gridUid)
+    {
+        if (!gridUid.HasValue)
+            return Loc.GetString("starmap-drive-status-no-drive");
+
+        if (!TryFindDriveOnGrid(gridUid.Value, out var drive) || drive == null)
+            return Loc.GetString("starmap-drive-status-no-drive");
+
+        if (drive.Charge >= drive.ChargeNeeded)
+            return Loc.GetString("starmap-drive-status-ready");
+
+        if (drive.Charging)
+        {
+            var pct = (int)(drive.Charge / drive.ChargeNeeded * 100);
+            return Loc.GetString("starmap-drive-status-charging", ("pct", pct));
+        }
+
+        TryComp<WarpingShipComponent>(gridUid.Value, out var ship);
+        return ship?.TargetMap != null
+            ? Loc.GetString("starmap-drive-status-destination-set")
+            : Loc.GetString("starmap-drive-status-idle");
     }
 
     #region Public API
@@ -157,11 +182,12 @@ public sealed partial class FtlPointsSystem
         if (!grid.HasValue)
             return;
 
-        if (!TryComp<ShuttleComponent>(grid, out var shuttleComponent))
+        if (!TryComp<ShuttleComponent>(grid, out _))
             return;
-        var warpingShipComponent = EnsureComp<WarpingShipComponent>(grid.Value);
 
+        var warpingShipComponent = EnsureComp<WarpingShipComponent>(grid.Value);
         warpingShipComponent.TargetMap = args.Star.Map;
-        _popupSystem.PopupEntity(Loc.GetString("popup-console-selected"), uid);
+
+        UpdateUserInterface(uid, component);
     }
 }

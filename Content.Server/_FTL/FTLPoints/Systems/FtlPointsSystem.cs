@@ -174,7 +174,6 @@ public sealed partial class FtlPointsSystem : SharedFtlPointsSystem
         // create map
 
         var mapId = _mapManager.CreateMap();
-        _mapManager.SetMapPaused(mapId, true);
         var mapUid = _mapManager.GetMapEntityId(mapId);
 
         // make it ftlable
@@ -220,6 +219,9 @@ public sealed partial class FtlPointsSystem : SharedFtlPointsSystem
                 effect.Effect(new FtlPointEffect.FtlPointEffectArgs(mapUid, mapId, _entManager, _mapManager));
             }
         }
+
+        // Pause map now that all entities are initialized
+        _mapManager.SetMapPaused(mapId, true);
 
         // Add all components required by the prototype
         if (prototype.TickComponents == null)
