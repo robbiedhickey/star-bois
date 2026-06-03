@@ -49,7 +49,7 @@ client:
 	dotnet run --project Content.Client
 
 server-dev:
-	dotnet run --project Content.Server -- --cvar mcp.enabled=true --cvar mcp.port=9222 --cvar mcp.client_url=http://localhost:9223 --cvar game.defaultpreset=$(PRESET) --cvar game.map=Cestoda --cvar game.lobbyenabled=true
+	dotnet run --project Content.Server -- --cvar mcp.enabled=true --cvar mcp.port=9222 --cvar mcp.client_url=http://localhost:9223 --cvar game.defaultpreset=$(PRESET) --cvar game.map=Cestoda --cvar game.lobbyenabled=true --cvar starmap.generate_roundstart=true
 
 client-dev:
 	dotnet run --project Content.Client -- --connect --connect-address localhost:1212 \

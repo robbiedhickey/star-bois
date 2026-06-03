@@ -161,7 +161,15 @@ public sealed partial class TestTools : EntitySystem
         if (station == EntityUid.Invalid)
             return McpToolResult.Err("No station found — is the round running?");
 
-        _ticker.MakeJoinGame(session, station, jobId);
+        try
+        {
+            _ticker.MakeJoinGame(session, station, jobId);
+        }
+        catch (Exception ex)
+        {
+            return McpToolResult.Err($"MakeJoinGame failed: {ex.Message} — player may have no saved character profile");
+        }
+
         return McpToolResult.Ok(new { ok = true, session = session.Name, job = jobId });
     }
 

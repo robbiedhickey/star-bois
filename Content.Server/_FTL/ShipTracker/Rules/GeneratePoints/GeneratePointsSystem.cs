@@ -2,6 +2,8 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._FTL.FTLPoints.Systems;
 using Content.Server.GameTicking.Rules;
+using Content.Server.GameTicking.Rules.Components;
+using Content.Shared.GameTicking.Components;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Components;
@@ -28,42 +30,41 @@ public sealed class GeneratePointsSystem : GameRuleSystem<GeneratePointsComponen
     public override void Initialize()
     {
         base.Initialize();
-
-        SubscribeLocalEvent<PlayerSpawningEvent>(OnPlayerSpawnEvent);
     }
 
-    private void OnPlayerSpawnEvent(PlayerSpawningEvent ev)
+    protected override void Started(EntityUid uid, GeneratePointsComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
-        var activeRules = QueryActiveRules();
-        while (activeRules.MoveNext(out _, out var component, out _))
+        base.Started(uid, component, gameRule, args);
+
+        if (component.Generated)
+            return;
+
+        if (!_configurationManager.GetCVar(CCVarsFTL.GenerateStarmapRoundstart))
+            return;
+
+        var sector = _pointsSystem.GenerateSector(25, null, false, false);
+
+        // Move the ship grid onto the sector map at a random starting position.
+        foreach (var stationUid in _stationSystem.GetStations())
         {
-            if (component.Generated)
-                return;
+            if (!TryComp<StationDataComponent>(stationUid, out var stationData))
+                continue;
 
-            if (!_configurationManager.GetCVar(CCVarsFTL.GenerateStarmapRoundstart))
-                return;
-            var station = _pointsSystem.GenerateSector(25, null, false, false);
+            var grid = _stationSystem.GetLargestGrid(new Entity<StationDataComponent?>(stationUid, stationData));
+            if (!grid.HasValue)
+                continue;
 
-            if (ev.Station.HasValue)
-            {
-                if (TryComp<StationDataComponent>(ev.Station.Value, out var stationDataComponent))
-                {
-                    var grid = _stationSystem.GetLargestGrid(new Entity<StationDataComponent?>(ev.Station.Value, stationDataComponent));
-                    if (grid.HasValue)
-                    {
-                        var shuttle = EnsureComp<ShuttleComponent>(grid.Value);
-                        // _shuttleSystem.FTLTravel(grid.Value, shuttle, _mapManager.GetMapEntityId(station));
-                        _mapManager.SetMapPaused(station, false);
-                        _transformSystem.SetCoordinates(grid.Value,
-                        new EntityCoordinates(_mapManager.GetMapEntityId(station),
-                        new Vector2(_pointsSystem.GenerateVectorWithRandomRadius(100, 600), _pointsSystem.GenerateVectorWithRandomRadius(100, 600))));
-                    }
-                }
-            }
-
-            component.Generated = true;
-
-            Log.Info("Finished generation of sector.");
+            EnsureComp<ShuttleComponent>(grid.Value);
+            _mapManager.SetMapPaused(sector, false);
+            _transformSystem.SetCoordinates(grid.Value,
+                new EntityCoordinates(_mapManager.GetMapEntityId(sector),
+                    new Vector2(
+                        _pointsSystem.GenerateVectorWithRandomRadius(100, 600),
+                        _pointsSystem.GenerateVectorWithRandomRadius(100, 600))));
+            break;
         }
+
+        component.Generated = true;
+        Log.Info("Finished generation of sector.");
     }
 }

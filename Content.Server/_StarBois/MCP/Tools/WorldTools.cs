@@ -1,5 +1,14 @@
+using System.Linq;
 using System.Numerics;
 using System.Text.Json;
+using Content.Server.Body.Components;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.Nutrition.EntitySystems;
+using Content.Shared.Nutrition.Components;
+using Content.Shared.StatusEffect;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -13,6 +22,8 @@ public sealed partial class WorldTools : EntitySystem
 {
     [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
 
     public IReadOnlyList<McpToolDefinition> Definitions { get; } =
     [
@@ -147,6 +158,54 @@ public sealed partial class WorldTools : EntitySystem
         foreach (var comp in AllComps(uid))
             components.Add(comp.GetType().Name.Replace("Component", ""));
 
+        // Mob vitals — only present on living entities
+        object? mobState = null;
+        if (HasComp<MobStateComponent>(uid))
+            mobState = _mobState.IsAlive(uid) ? "Alive" : _mobState.IsCritical(uid) ? "Critical" : "Dead";
+
+        object? damage = null;
+        if (TryComp<DamageableComponent>(uid, out _))
+            damage = new { total = _damageable.GetTotalDamage(uid).Float() };
+
+        object? respiration = null;
+        if (TryComp<RespiratorComponent>(uid, out var resp))
+        {
+            // Read component fields into locals before calling any methods to avoid RA0002
+            var status = resp.Status;
+            var saturation = resp.Saturation;
+            var maxSaturation = resp.MaxSaturation;
+            var suffocThreshold = resp.SuffocationThreshold;
+            var suffocCycles = resp.SuffocationCycles;
+            var suffocCycleThreshold = resp.SuffocationCycleThreshold;
+            respiration = new
+            {
+                status = Enum.GetName(typeof(RespiratorStatus), status) ?? status.ToString(),
+                saturation = MathF.Round(saturation, 2),
+                max_saturation = maxSaturation,
+                suffocation_threshold = suffocThreshold,
+                suffocation_cycles = suffocCycles,
+                suffocation_cycle_threshold = suffocCycleThreshold
+            };
+        }
+
+        object? hunger = null;
+        if (TryComp<HungerComponent>(uid, out var h))
+        {
+            var threshold = h.CurrentThreshold;
+            hunger = new { threshold = Enum.GetName(typeof(HungerThreshold), threshold) ?? threshold.ToString() };
+        }
+
+        object? thirst = null;
+        if (TryComp<ThirstComponent>(uid, out var t))
+        {
+            var threshold = t.CurrentThirstThreshold;
+            thirst = new { threshold = Enum.GetName(typeof(ThirstThreshold), threshold) ?? threshold.ToString() };
+        }
+
+        object? statusEffects = null;
+        if (TryComp<StatusEffectsComponent>(uid, out var sfx))
+            statusEffects = sfx.ActiveEffects.Keys.ToArray();
+
         return McpToolResult.Ok(new
         {
             id,
@@ -156,6 +215,12 @@ public sealed partial class WorldTools : EntitySystem
             map_id = (int)xform.MapID,
             x = MathF.Round(xform.WorldPosition.X, 2),
             y = MathF.Round(xform.WorldPosition.Y, 2),
+            mob_state = mobState,
+            damage,
+            respiration,
+            hunger,
+            thirst,
+            status_effects = statusEffects,
             components
         });
     }
