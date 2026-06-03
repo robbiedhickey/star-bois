@@ -58,23 +58,39 @@ Server reaches `Ready` with all `_FTL` prototypes loading. Map format 6 auto-mig
 
 **IPC Species:** Old `BodyPart` entities with `partType/symmetry` → `OrganIPCX` entities inheriting from `OrganBaseX`, with `InitialBody` slot mapping. Same pattern as Arachnid species in current upstream.
 
+**Imported YAML cleanup:** a few Ekrixi-era prototypes still need normalization after the main port. The remaining work is slot compatibility for `lowerClothing`, removal of stale duplicate `_FTL` prototypes that still trigger load errors, and the two FTL point effect stubs needed by `_FTL/WarpPoints/points.yml`.
+
 ---
 
-## Phase 4a — MCP Game Server ⏳ Pending
+## Phase 4a — MCP Game Server ✅ Complete
 
-An MCP server embedded in `Content.Server` that exposes game state and actions as tools, enabling agents (and automated tests) to drive the game without a human client. Built as an EntitySystem that spins up an HTTP/SSE endpoint alongside the game server.
+An MCP server embedded in `Content.Server` that exposes game state and actions as tools, enabling agents (and automated tests) to drive the game without a human client. Built as a pair of EntitySystems (`McpServerSystem` on server, `ClientAgentSystem` on client) that spin up HTTP/SSE endpoints alongside the game.
 
-**Tools to expose:**
-- `execute_command(command)` — run any server console command
-- `get_entities_near(position, range)` — query entities and their components
-- `spawn_entity(prototype, position)` — spawn any entity by prototype ID
-- `get_ship_systems(grid_id)` — read power, atmos, hull status of a ship grid
-- `get_logs(n)` — tail recent server log output
-- `get_map_info()` — loaded maps, grids, entity counts
+**Transport:** HTTP SSE — game server on `mcp.port` (default 27050), client agent on `mcp.client_port` (default 27051). Disabled by default (`mcp.enabled false`). Claude Code connects via MCP settings.
 
-**Why:** Enables Phase 4b verification without a human in the loop. An agent can spawn AI ships, check state transitions, verify the star map generates, and walk the full checklist programmatically. Also useful for regression testing as the game develops.
+**Server tools (`Content.Server/_StarBois/MCP/`):**
 
-**Transport:** HTTP SSE — game server runs it on a configurable port, Claude Code connects via MCP settings.
+| Tool | What it does |
+|---|---|
+| `world_get_entities_near` | Query entities + components within radius of a map position |
+| `world_get_map_info` | List loaded maps and grids with entity counts |
+| `world_get_entity_info` | Full component dump for a specific entity UID |
+| `admin_execute_command` | Run any server console command |
+| `admin_spawn_entity` | Spawn a prototype at map coordinates |
+| `test_list_players` | List connected sessions and their attached entities |
+| `test_get_player` | Get the first (or named) in-game player entity |
+| `test_teleport_entity` | Move any entity to map coordinates |
+
+**Client tools (`Content.Client/_StarBois/MCP/`):**
+
+| Tool | What it does |
+|---|---|
+| `client_screenshot` | Capture the current client frame as PNG |
+| `client_click_control` | Click a UI control by `AgentId` |
+| `client_set_control_value` | Set value on a named input control |
+| `client_get_control_tree` | Dump all visible UI controls with their `AgentId`s |
+
+**Test harness (`Tools/`):** Four Python scripts — smoke test (connection + tool list), contract test (schema validation), registration test (MCP discovery), and full scenario test (arrange/act/assert).
 
 ---
 
