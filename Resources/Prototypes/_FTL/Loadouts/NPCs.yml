@@ -1,6 +1,6 @@
 - type: loadout
   id: NPCCaptain
-  equipment: NPCCaptain
+  startingGear: NPCCaptain
 
 - type: startingGear
   id: NPCCaptain
@@ -14,7 +14,7 @@
 
 - type: loadout
   id: NPCMercenary
-  equipment: NPCMercenary
+  startingGear: NPCMercenary
 
 - type: startingGear
   id: NPCMercenary
@@ -29,7 +29,7 @@
 
 - type: loadout
   id: NPCEngineer
-  equipment: NPCEngineer
+  startingGear: NPCEngineer
 
 - type: startingGear
   id: NPCEngineer
@@ -45,7 +45,7 @@
 
 - type: loadout
   id: NPCDoctor
-  equipment: NPCDoctor
+  startingGear: NPCDoctor
 - type: startingGear
   id: NPCDoctor
   equipment:
@@ -56,7 +56,7 @@
 
 - type: loadout
   id: NPCDeckhand
-  equipment: NPCDeckhand
+  startingGear: NPCDeckhand
 
 - type: startingGear
   id: NPCDeckhand

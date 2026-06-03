@@ -15,6 +15,13 @@
       uiWindowPos: 0,1
       strippingWindowPos: 0,2
       displayName: Jumpsuit
+    - name: lowerClothing
+      slotTexture: uniform
+      slotFlags: LOWERCLOTHING
+      stripTime: 6
+      uiWindowPos: 3,2
+      strippingWindowPos: 3,2
+      displayName: Pants
     - name: outerClothing
       slotTexture: suit
       slotFlags: OUTERCLOTHING
