@@ -134,9 +134,10 @@ Driven by the MCP server. Server boots, reaches Ready.
 - No department selection screen; players pick a role and spawn aboard
 
 ### 5d — Round model alignment
-- `EndOnShipDestruction` currently calls `RoundEndSystem.EndRound()` → restarts the round
-- For now: show a "ship destroyed" end screen and return to lobby (acceptable)
-- Note: this is where Phase 5 and Phase 6 meet — the restart behavior eventually becomes "campaign over" or "show score"; do not over-engineer here yet
+- `EndOnShipDestruction` calls `RoundEndSystem.EndRound()` → round restarts
+- This is already correct: **round = run**, ship destroyed = run over, restart = new run — the same loop as FTL
+- Only needed: a "ship destroyed" end screen with run summary before returning to lobby
+- Mid-run save/resume is Phase 6, not here
 
 ### 5e — Dev tooling
 - Console command to skip lobby and spawn a full test crew instantly
