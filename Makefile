@@ -9,6 +9,12 @@ help:
 	@echo "  make clean-forks   Remove forks/ entirely"
 	@echo "  make server        Run the game server"
 	@echo "  make client        Run the game client"
+	@echo "  make server-dev    Run server with MCP enabled on localhost:9222"
+	@echo "  make client-dev    Run client connected to localhost:1212 with agent API on localhost:9223"
+	@echo "  make mcp-register  Validate repo-local MCP registration"
+	@echo "  make mcp-contract  Validate the MCP tool taxonomy"
+	@echo "  make mcp-smoke     Smoke-test MCP movement and nearby interaction"
+	@echo "  make mcp-scenario  Run an arrange-act-assert MCP scenario"
 
 forks:
 	@mkdir -p $(FORKS_DIR)
@@ -34,3 +40,22 @@ server:
 
 client:
 	dotnet run --project Content.Client
+
+server-dev:
+	dotnet run --project Content.Server -- --cvar mcp.enabled=true --cvar mcp.port=9222 --cvar mcp.client_url=http://localhost:9223
+
+client-dev:
+	dotnet run --project Content.Client -- --connect --connect-address localhost:1212 \
+		--cvar mcp.enabled=true --cvar mcp.client_port=9223
+
+mcp-register:
+	python3 Tools/starbois_mcp_registration.py
+
+mcp-smoke:
+	python3 Tools/starbois_mcp_smoke.py
+
+mcp-contract:
+	python3 Tools/starbois_mcp_contract.py
+
+mcp-scenario:
+	python3 Tools/starbois_mcp_test_scenario.py

@@ -1,3 +1,4 @@
+using Content.Client._StarBois.MCP;
 using Content.Shared._FTL.PowerControl;
 using Content.Shared.Gravity;
 using Content.Shared.Lathe;
@@ -38,6 +39,7 @@ public sealed partial class PowerControlWindow : FancyWindow
             {
                 _owner.ToggleApc(area.Entity);
             };
+            AgentControl.Register($"power-apc-{area.Entity.Id}-button", button, () => _owner.ToggleApc(area.Entity));
             Apcs.AddChild(button);
         }
     }

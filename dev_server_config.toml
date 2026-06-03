@@ -1,0 +1,15 @@
+# star-bois dev server config
+# Run with: dotnet run --project Content.Server -- --config-file=../../dev_server_config.toml
+# Or:       make server-dev
+
+[net]
+tickrate = 30
+port = 1212
+
+[game]
+hostname = "star-bois-dev"
+
+[vars]
+mcp.enabled = true
+mcp.port = 9222
+mcp.client_url = "http://localhost:9223"

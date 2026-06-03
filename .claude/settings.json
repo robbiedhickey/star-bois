@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "star-bois": {
+      "type": "sse",
+      "url": "http://localhost:9222/mcp/sse"
+    }
+  }
+}
