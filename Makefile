@@ -26,6 +26,7 @@ forks:
 	@mkdir -p $(FORKS_DIR)
 	@test -d $(FORKS_DIR)/ekrixi || git clone --depth=1 https://github.com/ekrixi-14/ekrixi.git $(FORKS_DIR)/ekrixi
 	@test -d $(FORKS_DIR)/frontier-station-14 || git clone --depth=1 https://github.com/new-frontiers-14/frontier-station-14.git $(FORKS_DIR)/frontier-station-14
+	@test -d $(FORKS_DIR)/docs || git clone --depth=1 https://github.com/space-wizards/docs.git $(FORKS_DIR)/docs
 	@test -d $(FORKS_DIR)/wayfarer-14 || git clone --depth=1 https://github.com/project-wayfarer/wayfarer-14.git $(FORKS_DIR)/wayfarer-14
 	@test -d $(FORKS_DIR)/deltav || git clone --depth=1 https://github.com/DeltaV-Station/Delta-v.git $(FORKS_DIR)/deltav
 	@test -d $(FORKS_DIR)/goobstation || git clone --depth=1 https://github.com/Goob-Station/Goob-Station.git $(FORKS_DIR)/goobstation
