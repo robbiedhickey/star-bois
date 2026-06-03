@@ -1,8 +1,4 @@
 - type: gameMapPool
   id: FTLMapPool
   maps:
-#    - Nesasio # Temporarily taken out of rotation due to the lack of a warp drive
-#    - Stormwalker # Temporarily taken out of rotation due to the lack of a warp drive
-#    - THERODTWO # Temporarily taken out of rotation due to the lack of a warp drive
     - Cestoda
-    - Myrmeleon

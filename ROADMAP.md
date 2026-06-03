@@ -118,10 +118,11 @@ Driven by the MCP server. Server boots, reaches Ready.
 
 **Steps in priority order:**
 
-### 5a — Fix ship selection and crew cap (YAML only)
-- Hard-code **Cestoda** as the single starting ship; remove `FTLMapPool` pool rotation
-- Cap crew slots to **4 players** (trim Cestoda's slot counts)
-- Remove disabled ships from the pool (Nesasio, Stormwalker, THERODTWO) to reduce confusion
+### 5a — Fix ship selection and crew cap (YAML only) ✅ Complete
+- `FTLMapPool` locked to Cestoda only; Myrmeleon removed, disabled ships already commented out
+- Cestoda `minPlayers 1` (solo testing), `maxPlayers 4`
+- Crew slots trimmed to 4: `Pilot[1,1]`, `StationEngineer[1,1]`, `MedicalDoctor[1,1]`, `Captain[0,1]`; SecurityOfficer and Passenger removed
+- Pilot playtime whitelist requirement removed (nobody has accrued time; re-add later if needed)
 
 ### 5b — Strip station-centric systems (YAML + minor C#)
 - Remove `BaseStationAlertLevels` from `StandardIndependentShip` — alert levels model nuke-op station threats, not FTL combat
