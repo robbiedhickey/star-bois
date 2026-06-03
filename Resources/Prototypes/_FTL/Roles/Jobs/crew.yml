@@ -1,0 +1,23 @@
+# Star-bois crew overrides — give all ship crew full ship access and no playtime gate.
+
+- type: job
+  id: StationEngineer
+  name: job-name-engineer
+  playTimeTracker: JobStationEngineer
+  startingGear: StationEngineerGear
+  icon: "JobIconStationEngineer"
+  supervisors: job-supervisors-ce
+  setPreference: true
+  accessGroups:
+    - AllAccess
+
+- type: job
+  id: MedicalDoctor
+  name: job-name-doctor
+  playTimeTracker: JobMedicalDoctor
+  startingGear: DoctorGear
+  icon: "JobIconMedicalDoctor"
+  supervisors: job-supervisors-cmo
+  setPreference: true
+  accessGroups:
+    - AllAccess

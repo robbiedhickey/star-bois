@@ -15,9 +15,6 @@
     - BaseStationCargo
     - BaseStationRecords
     - BaseStationShuttles
-    - BaseStationAlertLevels
-    - BaseStationExpeditions
-    - BaseStationAllEventsEligible
   noSpawn: true
   components:
     - type: Transform

@@ -1,6 +1,8 @@
 using System.Numerics;
 using System.Text.Json;
 using System.Linq;
+using Content.Server.GameTicking;
+using Content.Server.Station.Systems;
 using Robust.Server.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
@@ -17,6 +19,8 @@ public sealed partial class TestTools : EntitySystem
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private StationSystem _station = default!;
 
     public IReadOnlyList<McpToolDefinition> Definitions { get; } =
     [
@@ -79,6 +83,26 @@ public sealed partial class TestTools : EntitySystem
         },
         new()
         {
+            Name = "test_start_round",
+            Description = "Force-start the round immediately, bypassing the lobby countdown. Equivalent to the 'startround' console command.",
+            InputSchema = new { type = "object", properties = new { } }
+        },
+        new()
+        {
+            Name = "test_join_game",
+            Description = "Spawn a player into the game as a crew member. If job is omitted, uses Passenger as fallback. Call after test_start_round when the player is still in the lobby.",
+            InputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    name = new { type = "string", description = "Session name to join (e.g. localhost@JoeGenero). If omitted, joins the first lobby player." },
+                    job = new { type = "string", description = "Job prototype ID to spawn as, e.g. Pilot, StationEngineer, MedicalDoctor, Captain. Defaults to Pilot." }
+                }
+            }
+        },
+        new()
+        {
             Name = "test_assert_entity",
             Description = "Assert that an entity exists and optionally has prototype, component, and/or is near a coordinate.",
             InputSchema = new
@@ -106,8 +130,40 @@ public sealed partial class TestTools : EntitySystem
         "test_teleport_entity" => TeleportEntity(args),
         "test_find_entities" => FindEntities(args),
         "test_assert_entity" => AssertEntity(args),
+        "test_start_round" => StartRound(),
+        "test_join_game" => JoinGame(args),
         _ => McpToolResult.Err($"Unknown test tool: {name}")
     };
+
+    private McpToolResult StartRound()
+    {
+        if (_ticker.RunLevel == GameRunLevel.InRound)
+            return McpToolResult.Ok(new { ok = true, message = "Round already running" });
+
+        _ticker.StartRound(force: true);
+        return McpToolResult.Ok(new { ok = true, message = "Round started" });
+    }
+
+    private McpToolResult JoinGame(JsonElement args)
+    {
+        var sessionName = args.TryGetProperty("name", out var n) ? n.GetString() : null;
+        var jobId = args.TryGetProperty("job", out var j) ? j.GetString() : "Pilot";
+
+        var session = _players.Sessions.FirstOrDefault(s =>
+            sessionName == null ? s.Status == SessionStatus.Connected || s.Status == SessionStatus.InGame
+                                : s.Name == sessionName);
+
+        if (session == null)
+            return McpToolResult.Err(sessionName == null ? "No connected player found" : $"No player named '{sessionName}' found");
+
+        var stations = _station.GetStations();
+        var station = stations.FirstOrDefault();
+        if (station == EntityUid.Invalid)
+            return McpToolResult.Err("No station found — is the round running?");
+
+        _ticker.MakeJoinGame(session, station, jobId);
+        return McpToolResult.Ok(new { ok = true, session = session.Name, job = jobId });
+    }
 
     private McpToolResult ListPlayers()
     {

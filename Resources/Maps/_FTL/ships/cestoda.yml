@@ -21,9 +21,7 @@ entities:
     - type: Transform
     - type: Map
       mapPaused: True
-    - type: PhysicsMap
     - type: GridTree
-    - type: MovedGrids
     - type: Broadphase
     - type: OccluderTree
     - type: LoadedMap
@@ -1505,64 +1503,8 @@ entities:
     - type: Transform
       pos: 4.5,-2.5
       parent: 2
-- proto: ActionToggleInternals
-  entities:
-  - uid: 1416
-    components:
-    - type: Transform
-      parent: 1415
-    - type: InstantAction
-      container: 1415
-  - uid: 1419
-    components:
-    - type: Transform
-      parent: 1418
-    - type: InstantAction
-      container: 1418
-  - uid: 1421
-    components:
-    - type: Transform
-      parent: 1420
-    - type: InstantAction
-      container: 1420
-  - uid: 1423
-    components:
-    - type: Transform
-      parent: 1422
-    - type: InstantAction
-      container: 1422
-  - uid: 1425
-    components:
-    - type: Transform
-      parent: 1424
-    - type: InstantAction
-      container: 1424
-- proto: ActionToggleLight
-  entities:
-  - uid: 1344
-    components:
-    - type: Transform
-      parent: 1382
-    - type: InstantAction
-      container: 1382
-  - uid: 1535
-    components:
-    - type: Transform
-      parent: 1389
-    - type: InstantAction
-      container: 1389
-  - uid: 1548
-    components:
-    - type: Transform
-      parent: 1394
-    - type: InstantAction
-      container: 1394
-  - uid: 1557
-    components:
-    - type: Transform
-      parent: 1401
-    - type: InstantAction
-      container: 1401
+
+
 - proto: AirlockShuttle
   entities:
   - uid: 885
@@ -6547,18 +6489,12 @@ entities:
       pos: -0.08192277,-4.313925
       parent: 2
     - type: HandheldLight
-      toggleActionEntity: 1344
     - type: ContainerContainer
       containers:
         cell_slot: !type:ContainerSlot
           showEnts: False
           occludes: True
           ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 1344
     - type: ActionsContainer
   - uid: 1384
     components:
@@ -6571,18 +6507,12 @@ entities:
       pos: 2.592369,-5.238232
       parent: 2
     - type: HandheldLight
-      toggleActionEntity: 1535
     - type: ContainerContainer
       containers:
         cell_slot: !type:ContainerSlot
           showEnts: False
           occludes: True
           ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 1535
     - type: ActionsContainer
   - uid: 1390
     components:
@@ -6595,18 +6525,12 @@ entities:
       pos: 1.5819525,-5.7802753
       parent: 2
     - type: HandheldLight
-      toggleActionEntity: 1548
     - type: ContainerContainer
       containers:
         cell_slot: !type:ContainerSlot
           showEnts: False
           occludes: True
           ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 1548
     - type: ActionsContainer
   - uid: 1401
     components:
@@ -6614,18 +6538,12 @@ entities:
       pos: -1.540256,-5.3424706
       parent: 2
     - type: HandheldLight
-      toggleActionEntity: 1557
     - type: ContainerContainer
       containers:
         cell_slot: !type:ContainerSlot
           showEnts: False
           occludes: True
           ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 1557
     - type: ActionsContainer
 - proto: FoodBowlBig
   entities:
@@ -8271,7 +8189,6 @@ entities:
   - uid: 263
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: 15.5,-2.5
       parent: 2
   - uid: 265
@@ -8302,7 +8219,6 @@ entities:
   - uid: 902
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: -14.5,-11.5
       parent: 2
   - uid: 919
@@ -8423,7 +8339,6 @@ entities:
   - uid: 1470
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: 15.5,-11.5
       parent: 2
   - uid: 1725
@@ -9602,26 +9517,14 @@ entities:
       pos: -10.485982,-5.39223
       parent: 2
     - type: GasTank
-      toggleActionEntity: 1419
     - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 1419
   - uid: 1424
     components:
     - type: Transform
       pos: 11.597039,-10.497132
       parent: 2
     - type: GasTank
-      toggleActionEntity: 1425
     - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 1425
   - uid: 1429
     components:
     - type: Transform
@@ -9694,13 +9597,7 @@ entities:
       pos: -10.360982,-5.45473
       parent: 2
     - type: GasTank
-      toggleActionEntity: 1416
     - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 1416
   - uid: 1417
     components:
     - type: Transform
@@ -9712,26 +9609,14 @@ entities:
       pos: 11.374106,-10.403382
       parent: 2
     - type: GasTank
-      toggleActionEntity: 1421
     - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 1421
   - uid: 1422
     components:
     - type: Transform
       pos: 11.581414,-10.309632
       parent: 2
     - type: GasTank
-      toggleActionEntity: 1423
     - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 1423
   - uid: 1428
     components:
     - type: Transform

@@ -353,14 +353,79 @@ protected override void Dispose(bool disposing)
 
 ---
 
+## Transport: SSE-before-POST
+
+The MCP server uses HTTP+SSE. **You must open the SSE stream before posting a request**, otherwise the response fires before you're listening and is lost.
+
+```bash
+# Terminal 1 — open SSE stream first, responses arrive here
+curl -N http://localhost:9222/mcp/sse
+
+# Terminal 2 — then post requests
+curl -s -X POST http://localhost:9222/mcp/msg \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+# → 202 Accepted (body empty)
+# Response appears in Terminal 1 as: event: message\ndata: {...}
+```
+
+The first SSE event you'll receive after connecting is always:
+```
+event: endpoint
+data: http://localhost:9222/mcp/msg
+```
+That confirms the server is ready. Subsequent events are JSON-RPC responses keyed by `id`.
+
+When Claude Code connects via `.claude/settings.json`, the SSE lifecycle is managed automatically — this only matters for manual `curl` testing or Python scripts.
+
+---
+
+## Starting an Exploration Round
+
+The server defaults to **Sandbox** mode. To test FTL features (star map, warp drive, AI ships) you need an **Exploration** round.
+
+In the server console (or via `admin_execute_command`):
+```
+preset Exploration
+```
+Then start/restart the round:
+```
+restartroundnow
+```
+
+You can also chain them:
+```json
+{ "command": "preset Exploration" }
+{ "command": "restartroundnow" }
+```
+
+The round is ready when the server log shows:
+```
+[INFO] ticker: Started game rule  EndOnShipDestruction
+[INFO] ticker: Started game rule  GeneratePoints
+```
+
+---
+
+## Make Test Targets
+
+| Target | What it tests | When to run |
+|---|---|---|
+| `make mcp-register` | Validates `.claude/settings.json` MCP registration is well-formed | After editing settings |
+| `make mcp-contract` | Checks all tools belong to `world_/client_/test_/admin_` prefixes and core tools are present | After adding/removing tools |
+| `make mcp-smoke` | Connects SSE, calls `tools/list`, verifies expected tool names exist | Quick sanity check any time |
+| `make mcp-scenario` | Full arrange-act-assert: spawns entity, queries it, asserts position | After game-loop changes |
+
+---
+
 ## Testing Manually
 
-Once running, you can verify each tool layer independently:
+Once running, verify each tool layer independently:
 
 **1. Test the HTTP server is up:**
 ```bash
 curl http://localhost:9222/mcp/sse
-# Should stream SSE events
+# First event: endpoint\ndata: http://localhost:9222/mcp/msg
 ```
 
 **2. Test world tools via Claude Code:**

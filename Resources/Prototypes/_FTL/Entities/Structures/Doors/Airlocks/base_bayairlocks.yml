@@ -46,6 +46,11 @@
     - type: Weldable
       time: 3
     - type: Airlock
+      openingSpriteState: opening
+      closingSpriteState: closing
+      openSpriteState: open
+      closedSpriteState: closed
+      emaggingSpriteState: opening
     - type: DoorBolt
     - type: Appearance
     - type: WiresVisuals
@@ -131,7 +136,12 @@
     layers:
     - state: closed
       sprite: _FTL/Structures/Doors/Airlocks/Basic/door.rsi
-      map: [ "enum.BayDoorAnimatedLayers.Base" ]
+      map:
+        - "enum.BayDoorAnimatedLayers.Base"
+        - "enum.DoorVisualLayers.Base"
+        - "enum.DoorVisualLayers.BaseUnlit"
+        - "enum.DoorVisualLayers.BaseBolted"
+        - "enum.DoorVisualLayers.BaseEmergencyAccess"
     - state: closed
       sprite: _FTL/Structures/Doors/Airlocks/Basic/color.rsi
       map: [ "enum.BayDoorAnimatedLayers.Color" ]
@@ -147,7 +157,9 @@
     - state: closed
       visible: false
       shader: unshaded
-      map: [ "enum.BayDoorAncillaryLayers.BoltLights" ]
+      map:
+        - "enum.BayDoorAncillaryLayers.BoltLights"
+        - "enum.DoorVisualLayers.BaseEmagging"
       sprite: _FTL/Structures/Doors/Airlocks/Basic/lights_bolts.rsi
     - state: opening
       visible: false
@@ -180,7 +192,12 @@
     layers:
     - state: closed
       sprite: _FTL/Structures/Doors/Airlocks/Basic/door.rsi
-      map: ["enum.BayDoorAnimatedLayers.Base"]
+      map:
+        - "enum.BayDoorAnimatedLayers.Base"
+        - "enum.DoorVisualLayers.Base"
+        - "enum.DoorVisualLayers.BaseUnlit"
+        - "enum.DoorVisualLayers.BaseBolted"
+        - "enum.DoorVisualLayers.BaseEmergencyAccess"
     - state: closed
       sprite: _FTL/Structures/Doors/Airlocks/Basic/color.rsi
       map: ["enum.BayDoorAnimatedLayers.Color"]
@@ -196,7 +213,7 @@
     - state: closed
       visible: false
       shader: unshaded
-      map: [ "enum.BayDoorAncillaryLayers.BoltLights" ]
+      map: [ "enum.BayDoorAncillaryLayers.BoltLights", "enum.DoorVisualLayers.BaseEmagging" ]
       sprite: _FTL/Structures/Doors/Airlocks/Basic/lights_bolts.rsi
     - state: opening
       visible: false
@@ -230,7 +247,12 @@
     layers:
     - state: closed
       sprite: _FTL/Structures/Doors/Airlocks/External/door.rsi
-      map: ["enum.BayDoorAnimatedLayers.Base"]
+      map:
+        - "enum.BayDoorAnimatedLayers.Base"
+        - "enum.DoorVisualLayers.Base"
+        - "enum.DoorVisualLayers.BaseUnlit"
+        - "enum.DoorVisualLayers.BaseBolted"
+        - "enum.DoorVisualLayers.BaseEmergencyAccess"
     - state: closed
       sprite: _FTL/Structures/Doors/Airlocks/External/color.rsi
       map: ["enum.BayDoorAnimatedLayers.Color"]
@@ -248,7 +270,7 @@
     - state: closed
       visible: false
       shader: unshaded
-      map: [ "enum.BayDoorAncillaryLayers.BoltLights" ]
+      map: [ "enum.BayDoorAncillaryLayers.BoltLights", "enum.DoorVisualLayers.BaseEmagging" ]
       sprite: _FTL/Structures/Doors/Airlocks/External/lights_bolts.rsi
     - state: opening
       visible: false

@@ -1,20 +1,26 @@
 FORKS_DIR := forks
+# Game preset for server-dev. Options:
+#   Exploration  — FTL game mode (EndOnShipDestruction + GeneratePoints). Default.
+#   Sandbox      — No rules, free build/test. Good for inspecting ship layout or
+#                  testing individual mechanics without a running game loop.
+PRESET ?= Exploration
 
 .PHONY: forks update-forks clean-forks help
 
 help:
 	@echo "star-bois dev targets:"
-	@echo "  make forks         Clone all reference forks into forks/"
-	@echo "  make update-forks  Pull latest for each fork"
-	@echo "  make clean-forks   Remove forks/ entirely"
-	@echo "  make server        Run the game server"
-	@echo "  make client        Run the game client"
-	@echo "  make server-dev    Run server with MCP enabled on localhost:9222"
-	@echo "  make client-dev    Run client connected to localhost:1212 with agent API on localhost:9223"
-	@echo "  make mcp-register  Validate repo-local MCP registration"
-	@echo "  make mcp-contract  Validate the MCP tool taxonomy"
-	@echo "  make mcp-smoke     Smoke-test MCP movement and nearby interaction"
-	@echo "  make mcp-scenario  Run an arrange-act-assert MCP scenario"
+	@echo "  make forks              Clone all reference forks into forks/"
+	@echo "  make update-forks       Pull latest for each fork"
+	@echo "  make clean-forks        Remove forks/ entirely"
+	@echo "  make server             Run the game server (no MCP)"
+	@echo "  make client             Run the game client"
+	@echo "  make server-dev         Run server with MCP on localhost:9222 (PRESET=Exploration)"
+	@echo "  make server-dev PRESET=Sandbox   Same but start in Sandbox mode"
+	@echo "  make client-dev         Run client connected to localhost:1212 with agent API on localhost:9223"
+	@echo "  make mcp-register       Validate repo-local MCP registration"
+	@echo "  make mcp-contract       Validate the MCP tool taxonomy"
+	@echo "  make mcp-smoke          Smoke-test MCP connection and tool list"
+	@echo "  make mcp-scenario       Run an arrange-act-assert MCP scenario"
 
 forks:
 	@mkdir -p $(FORKS_DIR)
@@ -42,7 +48,7 @@ client:
 	dotnet run --project Content.Client
 
 server-dev:
-	dotnet run --project Content.Server -- --cvar mcp.enabled=true --cvar mcp.port=9222 --cvar mcp.client_url=http://localhost:9223
+	dotnet run --project Content.Server -- --cvar mcp.enabled=true --cvar mcp.port=9222 --cvar mcp.client_url=http://localhost:9223 --cvar game.defaultpreset=$(PRESET) --cvar game.map=Cestoda --cvar game.lobbyenabled=true
 
 client-dev:
 	dotnet run --project Content.Client -- --connect --connect-address localhost:1212 \

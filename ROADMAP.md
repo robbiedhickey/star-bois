@@ -124,10 +124,10 @@ Driven by the MCP server. Server boots, reaches Ready.
 - Crew slots trimmed to 4: `Pilot[1,1]`, `StationEngineer[1,1]`, `MedicalDoctor[1,1]`, `Captain[0,1]`; SecurityOfficer and Passenger removed
 - Pilot playtime whitelist requirement removed (nobody has accrued time; re-add later if needed)
 
-### 5b — Strip station-centric systems (YAML + minor C#)
-- Remove `BaseStationAlertLevels` from `StandardIndependentShip` — alert levels model nuke-op station threats, not FTL combat
-- Disable upstream antag game rules at round start: traitor, revolutionary, nuclear operative; none should fire in a co-op session
-- Remove nuke/syndicate objective round-end triggers; the only win/loss is `EndOnShipDestruction` (ship destroyed) or all crew dead
+### 5b — Strip station-centric systems ✅ Complete
+- Removed `BaseStationAlertLevels`, `BaseStationExpeditions`, `BaseStationAllEventsEligible` from `StandardIndependentStation`
+- `Exploration` preset was already clean — only `EndOnShipDestruction` and `GeneratePoints`; no antag rules needed stripping
+- Note: `BaseStationCargo` intentionally kept — cargo bay / resource acquisition fits FTL-style play
 
 ### 5c — Simplify crew spawning (C#)
 - Replace the full `StationJobs` lobby flow with a direct "spawn on ship as crew" path
