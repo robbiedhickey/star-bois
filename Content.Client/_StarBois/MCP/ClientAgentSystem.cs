@@ -11,6 +11,7 @@ using Robust.Client.Input;
 using Robust.Client.Player;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
+using Robust.Shared.Console;
 using Robust.Shared.Input;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
@@ -29,6 +30,7 @@ public sealed partial class ClientAgentSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IClyde _clyde = default!;
+    [Dependency] private IConsoleHost _console = default!;
     [Dependency] private IInputManager _inputManager = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -109,6 +111,7 @@ public sealed partial class ClientAgentSystem : EntitySystem
                 "/agent/get_player_info" => await RunOnMain(() => GetPlayerInfo()),
                 "/agent/move" => await Move(body),
                 "/agent/interact_entity" => await RunOnMain(() => InteractEntity(body)),
+                "/agent/execute_command" => await RunOnMain(() => ExecuteCommand(body)),
                 _ => (404, Encoding.UTF8.GetBytes("Not found"), "text/plain")
             };
         }
@@ -277,6 +280,17 @@ public sealed partial class ClientAgentSystem : EntitySystem
         SendInput(EngineKeyFunctions.Use, BoundKeyState.Up, uid);
 
         return Ok($"Interacted with entity {uid.Id}");
+    }
+
+    private (int, byte[], string) ExecuteCommand(string body)
+    {
+        var args = JsonSerializer.Deserialize<JsonElement>(body);
+        var command = args.GetProperty("command").GetString() ?? "";
+        if (string.IsNullOrWhiteSpace(command))
+            return Err("'command' must be a non-empty string.");
+
+        _console.ExecuteCommand(command);
+        return Ok($"Executed: {command}");
     }
 
     private void SendInput(BoundKeyFunction function, BoundKeyState state, EntityUid? target = null)

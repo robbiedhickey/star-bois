@@ -21,6 +21,7 @@ entities:
     - type: Transform
     - type: Map
       mapPaused: True
+      lightingEnabled: False
     - type: GridTree
     - type: Broadphase
     - type: OccluderTree
@@ -8140,23 +8141,6 @@ entities:
       parent: 2
     - type: AtmosPipeColor
       color: '#990000FF'
-- proto: Girder
-  entities:
-  - uid: 1412
-    components:
-    - type: Transform
-      pos: 5.5,-7.5
-      parent: 2
-  - uid: 1593
-    components:
-    - type: Transform
-      pos: -6.5,-4.5
-      parent: 2
-  - uid: 1657
-    components:
-    - type: Transform
-      pos: 9.5,3.5
-      parent: 2
 - proto: GravityGeneratorMini
   entities:
   - uid: 1440

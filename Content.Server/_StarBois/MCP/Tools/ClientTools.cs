@@ -82,6 +82,20 @@ public sealed partial class ClientTools : EntitySystem
         },
         new()
         {
+            Name = "client_execute_command",
+            Description = "Execute a client-side console command (e.g. togglelight, togglefov). Runs locally on the game client.",
+            InputSchema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    command = new { type = "string", description = "The console command string to execute, e.g. 'togglelight'" }
+                },
+                required = new[] { "command" }
+            }
+        },
+        new()
+        {
             Name = "client_interact_entity",
             Description = "Interact with an entity (equivalent to clicking on it in-world).",
             InputSchema = new
