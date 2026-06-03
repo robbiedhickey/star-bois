@@ -9,12 +9,12 @@ using Content.Server.Shuttles.Systems;
 using Content.Shared._FTL.FtlPoints;
 using Content.Shared._FTL.CCVar;
 using Content.Shared.Dataset;
+using Content.Shared.Salvage;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Parallax;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
-using Content.Shared.Salvage;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
@@ -180,7 +180,7 @@ public sealed partial class FtlPointsSystem : SharedFtlPointsSystem
         // make it ftlable
         EnsureComp<FTLDestinationComponent>(mapUid);
         _metaDataSystem.SetEntityName(mapUid, $"[{Loc.GetString(prototype.Tag)}] {
-            _salvageSystem.GetFTLName(_prototypeManager.Index<LocalizedDatasetPrototype>("names_borer"), _random.Next())}");
+            _random.Pick(_prototypeManager.Index<DatasetPrototype>("names_borer").Values)}");
         _consoleSystem.RefreshShuttleConsoles();
 
         // add parallax

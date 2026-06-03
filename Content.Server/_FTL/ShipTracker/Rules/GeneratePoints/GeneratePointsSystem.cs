@@ -13,6 +13,7 @@ using Robust.Shared.Configuration;
 using Content.Shared._FTL.CCVar;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server._FTL.ShipTracker.Rules.GeneratePoints;
 
@@ -55,6 +56,9 @@ public sealed class GeneratePointsSystem : GameRuleSystem<GeneratePointsComponen
                     {
                         EnsureComp<ShuttleComponent>(grid.Value);
                         _mapManager.SetMapPaused(station, false);
+                        var stationMapUid = _mapManager.GetMapEntityId(station);
+                        if (TryComp<MapComponent>(stationMapUid, out var mapComp))
+                            mapComp.LightingEnabled = false;
                         _transformSystem.SetCoordinates(grid.Value,
                         new EntityCoordinates(_mapManager.GetMapEntityId(station),
                         new Vector2(_pointsSystem.GenerateVectorWithRandomRadius(100, 600), _pointsSystem.GenerateVectorWithRandomRadius(100, 600))));

@@ -3,6 +3,7 @@ using Content.Server._FTL.FTLPoints.Components;
 using Content.Server.Shuttles.Components;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
+using Robust.Shared.Map;
 
 namespace Content.Server._FTL.FTLPoints.Systems;
 
@@ -67,7 +68,8 @@ public sealed partial class FtlPointsSystem
             if (!warpingShipComponent.TargetMap.HasValue)
                 continue;
 
-            // _shuttleSystem.FTLTravel(grid, shuttleComponent, _mapManager.GetMapEntityId(warpingShipComponent.TargetMap.Value));
+            var targetMapUid = _mapManager.GetMapEntityId(warpingShipComponent.TargetMap.Value);
+            _shuttleSystem.FTLToCoordinates(grid, shuttleComponent, new EntityCoordinates(targetMapUid, System.Numerics.Vector2.Zero), Angle.Zero);
             warpingShipComponent.TargetMap = null;
             component.Charge = 0;
             component.Charging = false;
