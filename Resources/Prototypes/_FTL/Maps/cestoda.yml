@@ -16,3 +16,4 @@
             Pilot: [ 1, 1 ]
             StationEngineer: [ 1, 1 ]
             MedicalDoctor: [ 1, 1 ]
+            Passenger: [ 0, -1 ]

@@ -30,41 +30,40 @@ public sealed class GeneratePointsSystem : GameRuleSystem<GeneratePointsComponen
     public override void Initialize()
     {
         base.Initialize();
+
+        SubscribeLocalEvent<PlayerSpawningEvent>(OnPlayerSpawnEvent);
     }
 
-    protected override void Started(EntityUid uid, GeneratePointsComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
+    private void OnPlayerSpawnEvent(PlayerSpawningEvent ev)
     {
-        base.Started(uid, component, gameRule, args);
-
-        if (component.Generated)
-            return;
-
-        if (!_configurationManager.GetCVar(CCVarsFTL.GenerateStarmapRoundstart))
-            return;
-
-        var sector = _pointsSystem.GenerateSector(25, null, false, false);
-
-        // Move the ship grid onto the sector map at a random starting position.
-        foreach (var stationUid in _stationSystem.GetStations())
+        var activeRules = QueryActiveRules();
+        while (activeRules.MoveNext(out _, out var component, out _))
         {
-            if (!TryComp<StationDataComponent>(stationUid, out var stationData))
-                continue;
+            if (component.Generated)
+                return;
 
-            var grid = _stationSystem.GetLargestGrid(new Entity<StationDataComponent?>(stationUid, stationData));
-            if (!grid.HasValue)
-                continue;
+            if (!_configurationManager.GetCVar(CCVarsFTL.GenerateStarmapRoundstart))
+                return;
+            var station = _pointsSystem.GenerateSector(25, null, false, false);
 
-            EnsureComp<ShuttleComponent>(grid.Value);
-            _mapManager.SetMapPaused(sector, false);
-            _transformSystem.SetCoordinates(grid.Value,
-                new EntityCoordinates(_mapManager.GetMapEntityId(sector),
-                    new Vector2(
-                        _pointsSystem.GenerateVectorWithRandomRadius(100, 600),
-                        _pointsSystem.GenerateVectorWithRandomRadius(100, 600))));
-            break;
+            if (ev.Station.HasValue)
+            {
+                if (TryComp<StationDataComponent>(ev.Station.Value, out var stationDataComponent))
+                {
+                    var grid = _stationSystem.GetLargestGrid(new Entity<StationDataComponent?>(ev.Station.Value, stationDataComponent));
+                    if (grid.HasValue)
+                    {
+                        EnsureComp<ShuttleComponent>(grid.Value);
+                        _mapManager.SetMapPaused(station, false);
+                        _transformSystem.SetCoordinates(grid.Value,
+                        new EntityCoordinates(_mapManager.GetMapEntityId(station),
+                        new Vector2(_pointsSystem.GenerateVectorWithRandomRadius(100, 600), _pointsSystem.GenerateVectorWithRandomRadius(100, 600))));
+                    }
+                }
+            }
+
+            component.Generated = true;
+            Log.Info("Finished generation of sector.");
         }
-
-        component.Generated = true;
-        Log.Info("Finished generation of sector.");
     }
 }
