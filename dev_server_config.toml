@@ -1,6 +1,6 @@
 # star-bois dev server config
-# Run with: dotnet run --project Content.Server -- --config-file=../../dev_server_config.toml
-# Or:       make server-dev
+# Run with: make server-dev
+#           make server-dev PRESET=Sandbox
 
 [net]
 tickrate = 30
@@ -8,8 +8,17 @@ port = 1212
 
 [game]
 hostname = "star-bois-dev"
+lobbyenabled = true
+lobbyduration = 5
+map = "Cestoda"
 
-[vars]
-mcp.enabled = true
-mcp.port = 9222
-mcp.client_url = "http://localhost:9223"
+[mcp]
+enabled = true
+port = 9222
+client_url = "http://localhost:9223"
+
+[starmap]
+generate_roundstart = true
+
+[warp]
+instant_charge = true

@@ -1,7 +1,6 @@
 # star-bois dev client config
-# Run with: dotnet run --project Content.Client -- --config-file=../../dev_client_config.toml
-# Or:       make client-dev
+# Run with: make client-dev
 
-[vars]
-mcp.enabled = true
-mcp.client_port = 9223
+[mcp]
+enabled = true
+client_port = 9223
